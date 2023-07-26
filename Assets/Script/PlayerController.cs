@@ -5,12 +5,15 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private float moveSpeed = 5f;
-    private float jumpForce = 500f;
+    public float jumpForce = 500f;
 
     private Rigidbody2D rigidbody2D;
 
     private float horizontal = 0f;
     private float vertical = 0f;
+
+    private float eulerAngelY = 0f;
+    private bool horizontalDown = false;
 
     private bool onJumpKey = false;
 
@@ -29,6 +32,14 @@ public class PlayerController : MonoBehaviour
         transform.position += Vector3.right * moveSpeed * Time.deltaTime * horizontal;
 
         onJumpKey = Input.GetKeyDown(KeyCode.Space);
+
+        horizontalDown = horizontal != 0;
+        eulerAngelY = horizontal < 0 ? 180 : 0;
+
+        if (horizontalDown)
+        {
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, eulerAngelY, transform.eulerAngles.z);
+        }
 
         if (onJumpKey)
             Jump();
